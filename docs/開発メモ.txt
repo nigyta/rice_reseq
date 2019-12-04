@@ -8,7 +8,7 @@ https://rapdb.dna.affrc.go.jp/genome-wide_variations/Analysis_workflow_for_detec
 cwltool  ../tools/bwa-index.cwl --reference IRGSP-1.0_genome.fasta 
 
 入力: --reference : genomeのfasta
-出力: index files, ログファイル (prefixは入力ファイルと同じ)
+出力: index files, ログファイル (prefixは入力ファイルと同じ)up
 -----
 
 # Create Dictionary

@@ -15,26 +15,18 @@ requirements:
 baseCommand: [picard, CreateSequenceDictionary]
 
 inputs:
-  ref_fasta:
+  reference:
     type: File
     inputBinding:
       prefix: "REFERENCE="
       separate: false
-#  out_dictionary:
-#    type: string
-#    default: genome.dict
-#    inputBinding:
-#      prefix: OUTPUT=
-#      separate: false
 
 arguments:
   - id: out_dictionary
-    # prefix: -OUTPUT
-    # valueFrom: "$(inputs.ref_fasta.nameroot).dict"
-    valueFrom: "OUTPUT=$(inputs.ref_fasta.nameroot).dict"
+    valueFrom: "OUTPUT=$(inputs.reference.nameroot).dict"
       
 outputs:
   dict:
     type: File
     outputBinding:
-      glob: $(inputs.ref_fasta.nameroot).dict
+      glob: $(inputs.reference.nameroot).dict

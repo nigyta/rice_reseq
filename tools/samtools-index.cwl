@@ -3,8 +3,8 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-id: samtools-sam2bam-v1.9
-label: samtools-sam2bam-v1.9
+id: samtools-index-v1.9
+label: samtools-index-v1.9
 
 requirements:
     InlineJavascriptRequirement: {}
@@ -12,29 +12,25 @@ requirements:
         dockerPull: quay.io/biocontainers/samtools:1.9--h10a08f8_12
 
 
-baseCommand: [ samtools, view, -b ]
+baseCommand: [ samtools, index ]
 
 inputs:
-  sam:
+  bam:
     type: File
-    doc: Input SAM file
+    doc: Input BAM file
   threads:
     type: int
     default: 1
     inputBinding:
       prefix: -@
 
-
 arguments:
-   - $(inputs.sam)
+   - $(inputs.bam)
 
-
-stdout: $(inputs.sam.nameroot).bam
-# stderr: samtools.log 
 
 outputs:
-  - id: bam
-    type: stdout
-#  - id: loga
-#    type: stderr
+  - id: bai
+    type: File
+    outputBinding:
+      glob: $(inputs.bam.basename).bai
 

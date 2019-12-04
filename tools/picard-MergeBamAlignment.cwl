@@ -31,7 +31,7 @@ inputs:
     inputBinding:
       prefix: OUTPUT=
       separate: false
-  ref_fasta:
+  reference:
     type: File
     inputBinding:
       prefix: REFERENCE_SEQUENCE=
