@@ -115,67 +115,47 @@ cwltool ../tools/gatk-SelectVariants.cwl --variant SRR849476.filter.genotype.vcf
 snpEff
 docker pull quay.io/biocontainers/snpeff:4.3.1t--3
 
+
+cwltool ../../rice_reseq/tools/snpeff-build.cwl --genome IRGSP-1.0_genome_M_C_unanchored.fa --gtf RAP-DB_MSU_concatenated_for_snpEff.gtf --protein RAP-DB_MSU_concatenated_protein.fa --dbname RICEDB --dbdir snpeff_db
+# dbnameとdbdirはdefault指定してあるので不要
+cwltool ../../rice_reseq/tools/snpeff-build.cwl --genome IRGSP-1.0_genome_M_C_unanchored.fa --gtf RAP-DB_MSU_concatenated_for_snpEff.gtf --protein RAP-DB_MSU_concatenated_protein.fa
 #
 
+アノテーション
+cwltool ../../rice_reseq/tools/snpeff-annotate.cwl --vcf SRR849476.varonly.vcf.gz  --dbdir snpeff_db/ --out_vcf out_snpeff.vcf
+dbnameはdefault指定
+
+
+workflowでbuild&annotation
+cwltool ../../rice_reseq/workflows/snpeff_all.cwl --genome IRGSP-1.0_genome_M_C_unanchored.fa --gtf RAP-DB_MSU_concatenated_for_snpEff.gtf --protein RAP-DB_MSU_concatenated_protein.fa --vcf SRR849476.varonly.vcf.gz --out_vcf out_snpeff.vcf
 ##
 cwl:
 
 実行例
 
-メモ
----
+
+=---------------------------------
+1205
+
+# prepare ref
+cwltool --outdir test_1205 ../workflows/prepare_reference.cwl --reference rice_test_genome.fa
+# mapping (fastq2bam)
+cwltool --outdir test_1205/ ../workflows/fastq2bam.cwl --fastq1 test_small_1.fq --fastq2 test_small_2.fq --outprefix SAMDxxxxx --threads 2 --reference test_1205/rice_test_genome.fa
+# bam2vcf
+cwltool --cachedir cashe_b2f --outdir test_1205/ ../workflows/bam2vcf.cwl --bam test_1205/SAMDxxxxx.rmdup.bam --reference test_1205/rice_test_genome.fa --outprefix SAMDxxxxx
+# snpeff
+cwltool --cachedir cache_1205  --outdir result_1205 ../../rice_reseq/workflows/snpeff_all.cwl --genome IRGSP-1.0_genome_M_C_unanchored.fa --gtf RAP-DB_MSU_concatenated_for_snpEff.gtf --protein RAP-DB_MSU_concatenated_protein.fa --vcf SRR849476.varonly.vcf.gz --dbdir snpeff_db_1205 --outprefix SAMDxxxxxx
 
 
-#
+全て実行
+cwltool --cachedir cache_all --outdir all_test ../workflows/rapdb-pipeline.cwl --fastq1 test_small_1.fq --fastq2 test_small_2.fq --outprefix SAMDxxxxx --threads 2 --reference rice_test_genome.fa
 
-##
-cwl:
+cwltool --cachedir cache_all --outdir all_test_snpeff ../workflows/rapdb-pipeline.cwl --fastq1 test_small_1.fq --fastq2 test_small_2.fq --outprefix SAMDxxxxx --threads 2 --reference IRGSP-1.0_genome_M_C_unanchored.fa --ref_gtf RAP-DB_MSU_concatenated_for_snpEff.gtf --ref_protein RAP-DB_MSU_concatenated_protein.fa
 
-実行例
+出力は
+SAMDxxxxx.rmdup.bam
+SAMDxxxxx.rmdup.bam.bai
+SAMDxxxxx.rmdup.metrics
+variants_SAMDxxxxx.varonly.vcf.gz
+variants_SAMDxxxxx.varonly.vcf.gz.tbi
 
-メモ
----
-
-
-#
-
-##
-cwl:
-
-実行例
-
-メモ
----
-
-
-#
-
-##
-cwl:
-
-実行例
-
-メモ
----
-
-
-#
-
-##
-cwl:
-
-実行例
-
-メモ
-
----
-
-
-#
-
-##
-cwl:
-
-実行例
-
-メモ

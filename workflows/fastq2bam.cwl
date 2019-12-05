@@ -17,8 +17,7 @@ inputs:
       - .bwt
       - .pac
       - .sa
-      # - ^.dict
-      - $(self.nameroot).dict
+      - ^.dict
   fastq1:
     type: File
   fastq2:
@@ -47,12 +46,12 @@ steps:
       threads: threads
     out: [bam]
 
-  sort_sam:
+  sort_bam:
     run: ../tools/samtools-sort.cwl
     in:
       bam: sam2bam/bam
       threads: threads
-    out: [bam]
+    out: [sorted_bam]
 
   picard_fastq2sam:
     run: ../tools/picard-FastqToSam.cwl
@@ -68,7 +67,7 @@ steps:
   picard_merge:
     run: ../tools/picard-MergeBamAlignment.cwl
     in:
-      aligned: sort_sam/bam
+      aligned: sort_bam/sorted_bam
       unmapped: picard_fastq2sam/bam
       reference: reference
       out_merged_bam:
@@ -81,8 +80,6 @@ steps:
     in:
       input: picard_merge/bam
       out_rmdup_bam: 
-        # source: bwa_mem/sam
-        # valueFrom: ${ return self.nameroot + ".rmdup.bam"}
         source: outprefix
         valueFrom: ${ return self + ".rmdup.bam"}
       out_metrics_file:
@@ -90,14 +87,29 @@ steps:
         valueFrom: ${ return self + ".rmdup.metrics"}
     out: [bam, metrics]
 
+  bam_indexing:
+    run: ../tools/samtools-index.cwl
+    in:
+      bam: picard_rmdup/bam
+      threads: threads
+    out: [bai]
+
+  bind_bam_index:
+    run: ../tools/util-bindBamIndex.cwl
+    in:
+      bam: picard_rmdup/bam
+      bai: bam_indexing/bai
+    out: [bam_with_index]
+
+
 outputs:
-    sorted_bam:
+    rmdup_bam_with_index:
       type: File
-      outputSource: sort_sam/bam
-    bam:
-      type: File
-      outputSource: picard_rmdup/bam
-    metrics:
+      outputSource: bind_bam_index/bam_with_index
+    # bam:
+    #   type: File
+    #   outputSource: picard_rmdup/bam
+    rmdup_metrics:
       type: File
       outputSource: picard_rmdup/metrics
 

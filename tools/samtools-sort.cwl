@@ -38,7 +38,7 @@ stdout: $(inputs.bam.nameroot).sort.bam
 # stderr: samtools.log 
 
 outputs:
-  - id: bam
+  - id: sorted_bam
     type: stdout
 #  - id: log
 #    type: stderr

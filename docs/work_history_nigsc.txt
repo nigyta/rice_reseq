@@ -16,3 +16,6 @@ cwltool --singularity --outdir SAMD00077979 ../workflows/fastq2bam.cwl --referen
 
 time cwltool --singularity --outdir SAMD00077979 ../tools/bwa-mem.cwl --fastq1 test_small_1.fq --fastq2 test_small_2.fq --reference ../../rice_test_data/rice_test_genome.fa -outprefix SAMD00077979 --threads 3
 time cwltool --singularity --outdir SAMD00077979 ../tools/bwa-mem.cwl --fastq1 ../../rice_test_data/DRR099981_test_1.fq --fastq2 ../../rice_test_data/DRR099981_test_2.fq --reference ../../rice_test_data/rice_test_genome.fa --outprefix SAMD00077979 --threads 3
+
+
+# gatk

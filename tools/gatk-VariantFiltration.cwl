@@ -12,7 +12,7 @@ requirements:
         dockerPull: broadinstitute/gatk:4.0.11.0
 
 
-baseCommand: [ gatk, VariantFiltration ]
+baseCommand: [ gatk, --java-options, -Xmx4G, VariantFiltration ]
 
 inputs:
   variant:

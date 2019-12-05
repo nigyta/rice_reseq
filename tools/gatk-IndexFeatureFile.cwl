@@ -28,7 +28,7 @@ arguments:
     valueFrom: $(inputs.featurefile.basename).tbi
 
 outputs:
-  vcf:
+  tbi:
     type: File
     outputBinding:
       glob: $(inputs.featurefile.basename).tbi

@@ -12,7 +12,7 @@ requirements:
         dockerPull: broadinstitute/gatk:4.0.11.0
 
 
-baseCommand: [ gatk, GenotypeGVCFs ]
+baseCommand: [ gatk, --java-options, -Xmx4G, GenotypeGVCFs ]
 
 inputs:
   variant:
@@ -39,7 +39,6 @@ inputs:
 
 
 arguments: []
-
 outputs:
   vcf:
     type: File

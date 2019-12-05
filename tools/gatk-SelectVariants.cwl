@@ -12,7 +12,7 @@ requirements:
         dockerPull: broadinstitute/gatk:4.0.11.0
 
 
-baseCommand: [ gatk, SelectVariants ]
+baseCommand: [ gatk, --java-options, -Xmx4G, SelectVariants ]
 
 inputs:
   variant:
@@ -33,14 +33,9 @@ inputs:
   output:
     type: string
     doc: Output gVCF file name
-    default: variants.filter.genotype.vcf.gz
+    default: variants.varonly.vcf.gz
     inputBinding:
       prefix: --output
-  nthreads:
-    type: int
-    default: 1
-    inputBinding:
-      prefix: -nt
 
 
 arguments:

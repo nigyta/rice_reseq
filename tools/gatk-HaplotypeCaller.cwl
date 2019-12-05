@@ -12,7 +12,7 @@ requirements:
         dockerPull: broadinstitute/gatk:4.0.11.0
 
 
-baseCommand: [ gatk, HaplotypeCaller ]
+baseCommand: [ gatk, --java-options, -Xmx4G, HaplotypeCaller ]
 
 inputs:
   input:
@@ -36,7 +36,7 @@ inputs:
     secondaryFiles:
       - .fai
       - ^.dict
-
+    
 
 arguments:
   - id: max-alt-alleles
@@ -51,3 +51,5 @@ outputs:
     type: File
     outputBinding:
       glob: $(inputs.output)
+    secondaryFiles:
+      - .tbi      
