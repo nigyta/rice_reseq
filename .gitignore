@@ -1,2 +1,4 @@
-test
-refs
+test_dev/
+refs/
+test/*/
+.DS_Store

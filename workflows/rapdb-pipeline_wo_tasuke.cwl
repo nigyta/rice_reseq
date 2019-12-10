@@ -79,15 +79,15 @@ steps:
       dbname: dbname
     out: [snpeff_vcf_with_tbi, snpeff_genes, snpeff_summary]
 
-  tasuke_conv:
-    run: ../tools/tasuke_bamtodepth/tasuke_bamtodepth.cwl 
-    in:
-      input_bam: fastq2bam/rmdup_bam_with_index
-      output_file:
-        source: outprefix
-        valueFrom: ${ return "alignment_depth_" + self + ".tsv"}
-
-    out: [tasuke_depth]
+#  tasuke_conv:
+#    run: ../tools/tasuke_bamtodepth/tasuke_bamtodepth.cwl 
+#    in:
+#      input_bam: fastq2bam/rmdup_bam_with_index
+#      output_file:
+#        source: outprefix
+#        valueFrom: ${ return "alignment_depth_" + self + ".tsv"}
+#
+#    out: [tasuke_depth]
 
 outputs:
   read_stats:
@@ -120,7 +120,7 @@ outputs:
   snpeff_summary:
     type: File
     outputSource: snpeff/snpeff_summary
-  tasuke_depth:
-    type: File
-    outputSource: tasuke_conv/tasuke_depth
+#  tasuke_depth:
+#    type: File
+#    outputSource: tasuke_conv/tasuke_depth
 

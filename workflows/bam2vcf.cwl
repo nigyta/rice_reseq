@@ -31,6 +31,9 @@ steps:
     in:
       input: bam
       reference: reference
+      output: 
+        source: outprefix
+        valueFrom: variants_$(self).g.vcf.gz
     out: [vcf]
 
       
@@ -61,7 +64,10 @@ steps:
 
 
 outputs:
-    gvcf:
+    hc_gvcf:
+      type: File
+      outputSource: haplotype_caller/vcf
+    varonly_vcf:
       type: File
       outputSource: select_variants/vcf
 

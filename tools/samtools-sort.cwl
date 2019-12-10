@@ -25,7 +25,7 @@ inputs:
       prefix: -@
   memory:
     type: string
-    default: 1G
+    default: 2G
     doc: Maximum memory per thread; suffix K/M/G recognized
     inputBinding:
       prefix: -m

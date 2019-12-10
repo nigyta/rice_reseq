@@ -1,0 +1,22 @@
+# How to run the RAPDB pipeline 
+
+## Download reference files
+```
+$ ./download_reference_files.sh
+```
+Genome Fasta, Annotation GTF, and Protein Fasta are downloaded to `ref` directory.
+
+## Run
+- Help  
+  ```
+  cwltool ../workflows/rapdb-pipeline.cwl -h
+  ```
+- Run  
+  All the output files will be generated into the directory specified with `--outdir`
+  ```
+  cwltool --outdir test_out ../workflows/rapdb-pipeline.cwl --fastq1 read1.fq.gz --fastq2 read2.fq.gz --outprefix SAMDxxxxxxx --threads 2 --reference ref/IRGSP-1.0_genome_M_C_unanchored.fa --ref_gtf ref/RAP-DB_MSU_concatenated_for_snpEff.gtf --ref_protein ref/RAP-DB_MSU_concatenated_protein.fa
+  ```
+- For debugging (Use `cachedir` to keep cache files and resume the job)
+  ```
+  cwltool --cachedir test_cache --outdir test_out ../workflows/rapdb-pipeline.cwl --fastq1 read1.fq.gz --fastq2 read2.fq.gz --outprefix SAMDxxxxxxx --threads 2 --reference ref/IRGSP-1.0_genome_M_C_unanchored.fa --ref_gtf ref/RAP-DB_MSU_concatenated_for_snpEff.gtf --ref_protein ref/RAP-DB_MSU_concatenated_protein.fa 
+  ```
