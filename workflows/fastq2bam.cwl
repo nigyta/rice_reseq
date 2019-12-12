@@ -17,16 +17,21 @@ inputs:
       - .bwt
       - .pac
       - .sa
-      - ^.dict
+      - $(self.nameroot).dict
+      # - ^.dict
   fastq1:
     type: File
+    doc: Input FASTQ file for Read-1 (forward)
   fastq2:
     type: File
+    doc: Input FASTQ file for Read-2 (reverse)
   outprefix:
     type: string
     doc: Any string that can distinguish sample.
   threads:
     type: int
+    default: 1
+    doc: Number of threads for parallel processing
 
 steps:
   bwa_mem:
