@@ -43,7 +43,7 @@ steps:
         valueFrom: ${ return "read-stats_" + self + ".tsv"}
     out: [preprocessed_fastq1, preprocessed_fastq2, fastqc_result1, fastqc_result2, read_stats]
 
-  prepare_referemce:
+  prepare_reference:
     run: prepare_reference.cwl 
     in:
       reference: reference
@@ -52,7 +52,7 @@ steps:
   fastq2bam:
     run: fastq2bam.cwl 
     in:
-      reference: prepare_referemce/fasta_with_index
+      reference: prepare_reference/fasta_with_index
       fastq1: read_preprocessing/preprocessed_fastq1
       fastq2: read_preprocessing/preprocessed_fastq2
       outprefix: outprefix
@@ -63,7 +63,7 @@ steps:
     run: bam2vcf.cwl 
     in:
       bam: fastq2bam/rmdup_bam_with_index
-      reference: prepare_referemce/fasta_with_index
+      reference: prepare_reference/fasta_with_index
       outprefix: outprefix
       threads: threads
     out: [hc_gvcf, varonly_vcf]
@@ -71,7 +71,7 @@ steps:
   snpeff:
     run: snpeff_all.cwl 
     in:
-      genome: prepare_referemce/fasta_with_index
+      genome: prepare_reference/fasta_with_index
       gtf: ref_gtf
       protein: ref_protein
       vcf: bam2vcf/varonly_vcf
