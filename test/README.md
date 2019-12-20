@@ -28,3 +28,7 @@ Genome Fasta, Annotation GTF, and Protein Fasta are downloaded to `ref` director
   ```
   cwltool --cachedir test_cache --outdir test_out ../workflows/rapdb-pipeline.cwl --fastq1 read1.fq.gz --fastq2 read2.fq.gz --outprefix SAMDxxxxxxx --threads 2 --reference ref/IRGSP-1.0_genome_M_C_unanchored.fa --ref_gtf ref/RAP-DB_MSU_concatenated_for_snpEff.gtf --ref_protein ref/RAP-DB_MSU_concatenated_protein.fa 
   ```
+
+## Misc
+- Create depth file for Tasuku+  
+  `tasuku_bamtodepth.cwl` now runs locally without using docker. Make sure that Samtools must be installed and be in the `PATH` environmental variable.  
