@@ -92,6 +92,12 @@ steps:
         valueFrom: ${ return self + ".rmdup.metrics"}
     out: [bam, metrics]
 
+  bam_depth:
+    run: ../tools/samtools-depth.cwl
+    in:
+      bam: picard_rmdup/bam
+    out: [depth]
+
   bam_indexing:
     run: ../tools/samtools-index.cwl
     in:
@@ -117,5 +123,7 @@ outputs:
     rmdup_metrics:
       type: File
       outputSource: picard_rmdup/metrics
-
+    depth:
+      type: File
+      outputSource: bam_depth/depth
 

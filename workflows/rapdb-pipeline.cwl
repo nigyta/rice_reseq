@@ -27,9 +27,9 @@ inputs:
   threads:
     type: int
     default: 1
-  dbname:
-    type: string
-    default: RAP_MSU_on_IRGSP-1.0
+#  dbname:
+#    type: string
+#    default: RAP_MSU_on_IRGSP-1.0
 
 steps:
   read_preprocessing:
@@ -38,10 +38,14 @@ steps:
       fastq1: fastq1
       fastq2: fastq2
       threads: threads
+      outprefix: outprefix
       stats_out: 
         source: outprefix
-        valueFrom: ${ return "read-stats_" + self + ".tsv"}
-    out: [preprocessed_fastq1, preprocessed_fastq2, fastqc_result1, fastqc_result2, read_stats]
+        valueFrom: ${ return self + "_read-stats" + ".tsv"}
+      stats_out_raw: 
+        source: outprefix
+        valueFrom: ${ return self + "_read-stats-raw" + ".tsv"}
+    out: [preprocessed_fastq1, preprocessed_fastq2, trimmomatic_log, trimmomatic_summary, fastqc_result1, fastqc_result2, read_stats, read_stats_raw]
 
   prepare_reference:
     run: prepare_reference.cwl 
@@ -57,7 +61,7 @@ steps:
       fastq2: read_preprocessing/preprocessed_fastq2
       outprefix: outprefix
       threads: threads
-    out: [rmdup_bam_with_index, rmdup_metrics]
+    out: [rmdup_bam_with_index, rmdup_metrics, depth]
 
   bam2vcf:
     run: bam2vcf.cwl 
@@ -76,7 +80,7 @@ steps:
       protein: ref_protein
       vcf: bam2vcf/varonly_vcf
       outprefix: outprefix
-      dbname: dbname
+#      dbname: dbname
     out: [snpeff_vcf_with_tbi, snpeff_genes, snpeff_summary]
 
   tasuke_conv:
@@ -93,18 +97,30 @@ outputs:
   read_stats:
     type: File
     outputSource: read_preprocessing/read_stats
+  read_stats_raw:
+    type: File
+    outputSource: read_preprocessing/read_stats_raw
   fastqc_result1:
     type: File
     outputSource: read_preprocessing/fastqc_result1
   fastqc_result2:
     type: File
     outputSource: read_preprocessing/fastqc_result2
+  trimmomatic_log:
+    type: File
+    outputSource: read_preprocessing/trimmomatic_log
+  trimmomatic_summary:
+    type: File
+    outputSource: read_preprocessing/trimmomatic_summary
   bam_with_index:
     type: File
     outputSource: fastq2bam/rmdup_bam_with_index
   rmdup_metrics:
     type: File
     outputSource: fastq2bam/rmdup_metrics
+  bam_depth:
+    type: File
+    outputSource: fastq2bam/depth
   hc_gvcf_with_tbi:
     type: File
     outputSource: bam2vcf/hc_gvcf

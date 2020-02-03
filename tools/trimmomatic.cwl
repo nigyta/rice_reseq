@@ -20,6 +20,9 @@ inputs:
     type: File
   adapter:
     type: File
+  outprefix:
+    type: string
+    default: "out"
   threads:
     type: int
     default: 1
@@ -28,6 +31,10 @@ arguments:
   - -threads
   - $(inputs.threads)
   - -phred33
+  - -trimlog
+  - $(inputs.outprefix).trimmomatic.log.txt
+  - -summary
+  - $(inputs.outprefix).trimmomatic.summary.txt
   - $(inputs.fastq1)
   - $(inputs.fastq2)  
   - $(inputs.fastq1.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).pe.fastq.gz
@@ -57,3 +64,11 @@ outputs:
     type: File
     outputBinding:
       glob: $(inputs.fastq2.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).se.fastq.gz
+  log:
+    type: File
+    outputBinding:
+      glob: $(inputs.outprefix).trimmomatic.log.txt
+  summary:
+    type: File
+    outputBinding:
+      glob: $(inputs.outprefix).trimmomatic.summary.txt

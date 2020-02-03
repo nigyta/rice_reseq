@@ -15,11 +15,26 @@ inputs:
   threads:
     type: int
     default: 1
+  outprefix:
+    type: string
+    default: out  # output prefix for trimmomatic log/stats
   stats_out:
     type: string
     default: read-stats.txt
+  stats_out_raw:
+    type: string
+    default: read-stats-raw.txt
 
 steps:
+  seqkit_stats_raw:
+    run: ../tools/seqkit-stats-PE.cwl
+    in:
+      fastq1: fastq1
+      fastq2: fastq2
+      threads: threads
+      stats_out: stats_out_raw
+    out: [result]
+
   get_adapter_fasta:
     run: ../tools/trimmomatic-getAdapterFasta.cwl
     in: {}
@@ -31,8 +46,9 @@ steps:
       fastq1: fastq1
       fastq2: fastq2
       threads: threads
+      outprefix: outprefix
       adapter: get_adapter_fasta/adapter_fasta
-    out: [pe1, pe2]
+    out: [pe1, pe2, log, summary]
 
 
   fastqc:
@@ -60,6 +76,12 @@ outputs:
     preprocessed_fastq2:
       type: File
       outputSource: trimmomatic/pe2
+    trimmomatic_log:
+      type: File
+      outputSource: trimmomatic/log
+    trimmomatic_summary:
+      type: File
+      outputSource: trimmomatic/summary
     fastqc_result1:
       type: File
       outputSource: fastqc/result1
@@ -69,4 +91,7 @@ outputs:
     read_stats:
       type: File
       outputSource: seqkit_stats/result
+    read_stats_raw:
+      type: File
+      outputSource: seqkit_stats_raw/result
 
