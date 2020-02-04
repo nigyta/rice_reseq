@@ -6,6 +6,7 @@
 - samtools, awk, perl (required to create a depth file for Tasuke+)
 - Docker  
     If you want to run the pipeline on NIG-SuperCompurer, use singularity instead of Docker, and node.js is required additionally (See below).
+- 20GB memory
 
 ## Prepare reference files
 For testing, execute the commands below in the `test` directory.
