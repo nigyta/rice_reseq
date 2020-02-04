@@ -20,13 +20,18 @@ inputs:
     doc: Reference protein FASTA for snpEff
   fastq1:
     type: File
+    doc: FASTQ file for the forward read
   fastq2:
     type: File
+    doc: FASTQ file for the reverse read
   outprefix:
     type: string
+    default: out
+    doc: Prefix for output files
   threads:
     type: int
     default: 1
+    doc: Number of threads for parallel processing
 #  dbname:
 #    type: string
 #    default: RAP_MSU_on_IRGSP-1.0
@@ -89,7 +94,7 @@ steps:
 #      input_bam: fastq2bam/rmdup_bam_with_index
 #      output_file:
 #        source: outprefix
-#        valueFrom: ${ return "alignment_depth_" + self + ".tsv"}
+#        valueFrom: ${ return "tasuke_depth_" + self + ".tsv"}
 #
 #    out: [tasuke_depth]
 
