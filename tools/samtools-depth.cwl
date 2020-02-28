@@ -12,19 +12,26 @@ requirements:
         dockerPull: quay.io/biocontainers/samtools:1.9--h10a08f8_12
 
 
-baseCommand: [ samtools, depth ]
+baseCommand: [ samtools, depth]  # add -a to output non-mapped region
 
 inputs:
   bam:
     type: File
     doc: Input BAM file
+    inputBinding:
+      position: 2
 
-arguments:
-   - $(inputs.bam)
+  bed:
+    type: File
+    doc: BED file describing chromosome length
+    inputBinding:
+      position: 1
+      prefix: -b
+
+arguments: []
 
 
-stdout: $(inputs.bam.nameroot).depth.txt
-# stderr: samtools.log 
+stdout: $(inputs.bam.basename).depth.txt
 
 outputs:
   - id: depth

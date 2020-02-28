@@ -11,6 +11,7 @@ baseCommand: [fastqc]
 arguments:
     - $(inputs.fastq1)
     - $(inputs.fastq2)
+    - --nogroup 
     - -o 
     - .
 

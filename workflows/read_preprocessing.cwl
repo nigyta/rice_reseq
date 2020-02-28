@@ -26,6 +26,16 @@ inputs:
     default: read-stats-raw.txt
 
 steps:
+
+  fastqc_raw:
+    run: ../tools/fastqc-PE.cwl
+    in:
+      fastq1: fastq1
+      fastq2: fastq2
+      threads: threads
+    out: [result1, result2]
+
+
   seqkit_stats_raw:
     run: ../tools/seqkit-stats-PE.cwl
     in:
@@ -70,6 +80,12 @@ steps:
 
 
 outputs:
+    fastqc_raw_result1:
+      type: File
+      outputSource: fastqc_raw/result1 
+    fastqc_raw_result2:
+      type: File
+      outputSource: fastqc_raw/result2 
     preprocessed_fastq1:
       type: File
       outputSource: trimmomatic/pe1

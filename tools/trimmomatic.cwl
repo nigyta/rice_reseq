@@ -37,10 +37,10 @@ arguments:
   - $(inputs.outprefix).trimmomatic.summary.txt
   - $(inputs.fastq1)
   - $(inputs.fastq2)  
-  - $(inputs.fastq1.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).pe.fastq.gz
-  - $(inputs.fastq1.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).se.fastq.gz
-  - $(inputs.fastq2.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).pe.fastq.gz
-  - $(inputs.fastq2.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).se.fastq.gz
+  - $(inputs.fastq1.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).trimmomatic-pe.fastq.gz
+  - $(inputs.fastq1.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).trimmomatic-se.fastq.gz
+  - $(inputs.fastq2.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).trimmomatic-pe.fastq.gz
+  - $(inputs.fastq2.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).trimmomatic-se.fastq.gz
   - ILLUMINACLIP:$(inputs.adapter.path):2:30:10
   - LEADING:20
   - TRAILING:20
@@ -51,19 +51,19 @@ outputs:
   pe1:
     type: File
     outputBinding:
-      glob: $(inputs.fastq1.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).pe.fastq.gz
+      glob: $(inputs.fastq1.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).trimmomatic-pe.fastq.gz
   pe2:
     type: File
     outputBinding:
-      glob: $(inputs.fastq2.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).pe.fastq.gz
+      glob: $(inputs.fastq2.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).trimmomatic-pe.fastq.gz
   se1:
     type: File
     outputBinding:
-      glob: $(inputs.fastq1.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).se.fastq.gz
+      glob: $(inputs.fastq1.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).trimmomatic-se.fastq.gz
   se2:
     type: File
     outputBinding:
-      glob: $(inputs.fastq2.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).se.fastq.gz
+      glob: $(inputs.fastq2.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).trimmomatic-se.fastq.gz
   log:
     type: File
     outputBinding:

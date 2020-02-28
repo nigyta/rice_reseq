@@ -80,6 +80,44 @@ steps:
         valueFrom: ${ return self + ".merge.bam"}
     out: [bam]
 
+  get_unmapped_bam:
+    run: ../tools/samtools-get-unmapped.cwl 
+    in:
+      bam: picard_merge/bam
+      threads: threads
+      outbam:
+        source: outprefix
+        valueFrom: ${ return self + ".unmapped-read.bam"}
+    out: [unmapped_read_bam]
+    
+  get_unmapped_fastq:
+    run: ../tools/picard-SamToFastq.cwl
+    in:
+      bam: get_unmapped_bam/unmapped_read_bam
+      unmapped_fastq1:
+        source: outprefix
+        valueFrom: ${ return self + ".unmapped-read.r1.fastq"}
+      unmapped_fastq2:
+        source: outprefix
+        valueFrom: ${ return self + ".unmapped-read.r2.fastq"}
+      # unmapped_fastq_unpaired:
+      #   source: outprefix
+      #   valueFrom: ${ return self + ".unmapped-read.unpaired.fastq"}
+    # out: [unmapped_fastq1, unmapped_fastq2, unmapped_fastq_unpaired]
+    out: [out_unmapped_fastq1, out_unmapped_fastq2]
+
+  gzip_unmapped_fastq1:
+    run: ../tools/gzip.cwl
+    in:
+      input: get_unmapped_fastq/out_unmapped_fastq1
+    out: [gzipped_file]
+
+  gzip_unmapped_fastq2:
+    run: ../tools/gzip.cwl
+    in:
+      input: get_unmapped_fastq/out_unmapped_fastq2
+    out: [gzipped_file]
+
   picard_rmdup:
     run: ../tools/picard-MarkDuplicates.cwl
     in:
@@ -92,11 +130,39 @@ steps:
         valueFrom: ${ return self + ".rmdup.metrics"}
     out: [bam, metrics]
 
+  bam_stats:
+    run: ../tools/samtools-stats.cwl
+    in:
+      bam: picard_rmdup/bam
+    out: [stats]
+
+  bam_header:
+    run: ../tools/samtools-view-header.cwl
+    in:
+      bam: picard_rmdup/bam
+    out: [header]
+
+  make_chrom_bed:  # for BAM depth
+    run: ../tools/awk-make-chr-bed.cwl
+    in:
+      input: bam_header/header
+    out: [bed]
+
   bam_depth:
     run: ../tools/samtools-depth.cwl
     in:
       bam: picard_rmdup/bam
+      bed: make_chrom_bed/bed
     out: [depth]
+
+  get_avg_depth:
+    run: ../tools/awk-get-ave-depth.cwl
+    in:
+      input: bam_depth/depth
+      output:
+        source: outprefix
+        valueFrom: ${ return self + ".rmdup.bam.avg-depth.txt"}
+    out: [avg_depth]
 
   bam_indexing:
     run: ../tools/samtools-index.cwl
@@ -123,7 +189,29 @@ outputs:
     rmdup_metrics:
       type: File
       outputSource: picard_rmdup/metrics
-    depth:
+    # depth:
+    #   type: File
+    #   outputSource: bam_depth/depth
+    stats:
       type: File
-      outputSource: bam_depth/depth
+      outputSource: bam_stats/stats
+    # unmapped_read_bam:
+    #   type: File
+    #   outputSource: get_unmapped_bam/unmapped_read_bam
+    unmapped_fastq1:
+      type: File
+      outputSource: gzip_unmapped_fastq1/gzipped_file
+    unmapped_fastq2:
+      type: File
+      outputSource: gzip_unmapped_fastq2/gzipped_file
+    # chrom_bed:
+    #   type: File
+    #   outputSource: make_chrom_bed/bed
+    avg_depth:
+      type: File
+      outputSource: get_avg_depth/avg_depth
+    # unmapped_fastq_unpaired:
+    #   type: File
+    #   outputSource: get_unmapped_fastq/unmapped_fastq_unpaired
+
 
