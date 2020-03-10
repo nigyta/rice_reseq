@@ -37,12 +37,15 @@ inputs:
     inputBinding:
       prefix: --output
   
+  filter-expression:
+    type: string
+    doc: Filter condition
+    default: "QD < 5.0 || FS > 50.0 || SOR > 3.0 || MQ < 50.0 || MQRankSum < -2.5 || ReadPosRankSum < -1.0 || ReadPosRankSum > 3.5"
+    inputBinding:
+      prefix: --filter-expression
 
 
 arguments:
-  - id: filter-expression
-    prefix: --filter-expression
-    valueFrom: "QD < 5.0 || FS > 50.0 || SOR > 3.0 || MQ < 50.0 || MQRankSum < -2.5 || ReadPosRankSum < -1.0 || ReadPosRankSum > 3.5"
   - id: filter-name
     prefix: --filter-name
     valueFrom: FILTER

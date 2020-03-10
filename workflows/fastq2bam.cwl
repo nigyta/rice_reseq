@@ -136,33 +136,33 @@ steps:
       bam: picard_rmdup/bam
     out: [stats]
 
-  bam_header:
-    run: ../tools/samtools-view-header.cwl
-    in:
-      bam: picard_rmdup/bam
-    out: [header]
+  # bam_header:
+  #   run: ../tools/samtools-view-header.cwl
+  #   in:
+  #     bam: picard_rmdup/bam
+  #   out: [header]
 
-  make_chrom_bed:  # for BAM depth
-    run: ../tools/awk-make-chr-bed.cwl
-    in:
-      input: bam_header/header
-    out: [bed]
+  # make_chrom_bed:  # for BAM depth
+  #   run: ../tools/awk-make-chr-bed.cwl
+  #   in:
+  #     input: bam_header/header
+  #   out: [bed]
 
-  bam_depth:
-    run: ../tools/samtools-depth.cwl
-    in:
-      bam: picard_rmdup/bam
-      bed: make_chrom_bed/bed
-    out: [depth]
+  # bam_depth:
+  #   run: ../tools/samtools-depth.cwl
+  #   in:
+  #     bam: picard_rmdup/bam
+  #     bed: make_chrom_bed/bed
+  #   out: [depth]
 
-  get_avg_depth:
-    run: ../tools/awk-get-ave-depth.cwl
-    in:
-      input: bam_depth/depth
-      output:
-        source: outprefix
-        valueFrom: ${ return self + ".rmdup.bam.avg-depth.txt"}
-    out: [avg_depth]
+  # get_avg_depth:
+  #   run: ../tools/awk-get-ave-depth.cwl
+  #   in:
+  #     input: bam_depth/depth
+  #     output:
+  #       source: outprefix
+  #       valueFrom: ${ return self + ".rmdup.bam.avg-depth.txt"}
+  #   out: [avg_depth]
 
   bam_indexing:
     run: ../tools/samtools-index.cwl
@@ -207,9 +207,6 @@ outputs:
     # chrom_bed:
     #   type: File
     #   outputSource: make_chrom_bed/bed
-    avg_depth:
-      type: File
-      outputSource: get_avg_depth/avg_depth
     # unmapped_fastq_unpaired:
     #   type: File
     #   outputSource: get_unmapped_fastq/unmapped_fastq_unpaired

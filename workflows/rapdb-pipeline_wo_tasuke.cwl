@@ -32,6 +32,11 @@ inputs:
     type: int
     default: 1
     doc: Number of threads for parallel processing
+  filter-expression:
+    type: string
+    doc: VCF filter condition for GATK-VariantFiltration
+    default: "QD < 5.0 || FS > 50.0 || SOR > 3.0 || MQ < 50.0 || MQRankSum < -2.5 || ReadPosRankSum < -1.0 || ReadPosRankSum > 3.5"
+
 #  dbname:
 #    type: string
 #    default: RAP_MSU_on_IRGSP-1.0
@@ -66,7 +71,7 @@ steps:
       fastq2: read_preprocessing/preprocessed_fastq2
       outprefix: outprefix
       threads: threads
-    out: [rmdup_bam_with_index, rmdup_metrics, avg_depth, stats, unmapped_fastq1, unmapped_fastq2]
+    out: [rmdup_bam_with_index, rmdup_metrics, stats, unmapped_fastq1, unmapped_fastq2]
 
   bam2vcf:
     run: bam2vcf.cwl 
@@ -75,6 +80,7 @@ steps:
       reference: prepare_reference/fasta_with_index
       outprefix: outprefix
       threads: threads
+      filter-expression: filter-expression
     out: [hc_gvcf, varonly_vcf]
 
   snpeff:
@@ -88,12 +94,12 @@ steps:
 #      dbname: dbname
     out: [snpeff_vcf_with_tbi, snpeff_genes, snpeff_summary]
 
-  # tasuke_conv:
+  # bam2tasuke:
   #   run: ../workflows/bam2tasuke.cwl 
   #   in:
   #     bam: fastq2bam/rmdup_bam_with_index
   #     outprefix: outprefix
-  #   out: [tasuke_depth]
+  #   out: [tasuke_depth, avg_depth]
 
 outputs:
   read_stats_raw:
@@ -126,9 +132,6 @@ outputs:
   rmdup_metrics:
     type: File
     outputSource: fastq2bam/rmdup_metrics
-  avg_depth:
-    type: File
-    outputSource: fastq2bam/avg_depth
   bam_stats:
     type: File
     outputSource: fastq2bam/stats
@@ -155,5 +158,8 @@ outputs:
     outputSource: snpeff/snpeff_summary
   # tasuke_depth:
   #   type: File
-  #   outputSource: tasuke_conv/tasuke_depth
+  #   outputSource: bam2tasuke/tasuke_depth
+  # avg_depth:
+  #   type: File
+  #   outputSource: bam2tasuke/avg_depth
 

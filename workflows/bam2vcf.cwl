@@ -24,6 +24,10 @@ inputs:
   threads:
     type: int
     default: 1
+  filter-expression:
+    type: string
+    doc: VCF filter condition for GATK-VariantFiltration
+    default: "QD < 5.0 || FS > 50.0 || SOR > 3.0 || MQ < 50.0 || MQRankSum < -2.5 || ReadPosRankSum < -1.0 || ReadPosRankSum > 3.5"
 
 steps:
   haplotype_caller:
@@ -49,6 +53,7 @@ steps:
     in:
       variant: genotype_gvcf/vcf
       reference: reference
+      filter-expression: filter-expression
     out: [vcf]
 
   select_variants:

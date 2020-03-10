@@ -2,3 +2,4 @@ test_dev/
 refs/
 test/*/
 .DS_Store
+.devcontainer/
