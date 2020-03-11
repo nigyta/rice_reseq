@@ -1,7 +1,7 @@
 #!/bin/bash
 
-mkdir ref
-cd ref
+mkdir reference
+cd reference
 echo Downloading reference files from RAP-DB...
 curl -LO https://rapdb.dna.affrc.go.jp/download/archive/genome-wide_variations/IRGSP-1.0_genome_M_C_unanchored.fa.gz
 curl -LO https://rapdb.dna.affrc.go.jp/download/archive/genome-wide_variations/RAP-DB_MSU_concatenated_for_snpEff.gtf.gz

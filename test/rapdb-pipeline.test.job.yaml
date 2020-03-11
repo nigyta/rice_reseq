@@ -1,13 +1,13 @@
 threads: 2  # type "int".
 reference:  # type "File"
     class: File
-    path: ref/IRGSP-1.0_genome_M_C_unanchored.fa
+    path: ../reference/IRGSP-1.0_genome_M_C_unanchored.fa
 ref_protein:  # type "File"
     class: File
-    path: ref/RAP-DB_MSU_concatenated_protein.fa
+    path: ../reference/RAP-DB_MSU_concatenated_protein.fa
 ref_gtf:  # type "File"
     class: File
-    path: ref/RAP-DB_MSU_concatenated_for_snpEff.gtf
+    path: ../reference/RAP-DB_MSU_concatenated_for_snpEff.gtf
 outprefix: SAMDxxxxxxx  # type "string"
 fastq2:  # type "File"
     class: File

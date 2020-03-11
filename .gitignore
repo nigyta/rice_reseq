@@ -3,3 +3,5 @@ refs/
 test/*/
 .DS_Store
 .devcontainer/
+reference/
+docs_dev/
