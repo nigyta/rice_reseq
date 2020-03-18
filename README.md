@@ -76,7 +76,7 @@ Files in the brackets ([ ]) will be output in the result directory.
 1. Read preprocessing (read_preprocessing.cwl)  
     1.1 FASTQ stats for raw reads (seqkit stats) __[stats report]__  
     1.2 Quality check for raw reads (FastQC) __[Report HTML]__  
-    1.3 Adapter trimming and read QC (Trimmomatic) __[summary, log]__  
+    1.3 Adapter trimming and read QC (Trimmomatic) __[summary]__  
     1.4 FASTQ stats for preprocessed reads (seqkit stats) __[stats report]__  
     1.5 Read quality check (FastQC) __[Report HTML]__  
 2. Read mapping and BAM conversion (fastq2bam.cwl)  
@@ -106,7 +106,6 @@ Files in the brackets ([ ]) will be output in the result directory.
 | ---- | ---- | --- |
 | {outprefix}_read-stats-raw.tsv | Stats file for raw FASTQ files | 1.1 |
 | {fastq1/2}_fastqc.html | FastQC report for raw reads | 1.2 |
-| {outprefix}.trimmomatic.log.txt | Log file for Trimmomatic | 1.3 |
 | {outprefix}.trimmomatic.summary.txt | Summary of Trimmomatic result | 1.3 |
 | {outprefix}_read-stats.tsv | Stats file for preprocessed FASTQ files | 1.4 |
 | {fastq1/2}.trimmomatic-pe_fastqc.html | FastQC report for reads processed using Trimmomatoc | 1.5 |

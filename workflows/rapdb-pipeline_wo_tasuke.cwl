@@ -55,7 +55,7 @@ steps:
       stats_out_raw: 
         source: outprefix
         valueFrom: ${ return self + "_read-stats-raw" + ".tsv"}
-    out: [preprocessed_fastq1, preprocessed_fastq2, trimmomatic_log, trimmomatic_summary, fastqc_result1, fastqc_result2, read_stats, read_stats_raw, fastqc_raw_result1, fastqc_raw_result2]
+    out: [preprocessed_fastq1, preprocessed_fastq2, trimmomatic_summary, fastqc_result1, fastqc_result2, read_stats, read_stats_raw, fastqc_raw_result1, fastqc_raw_result2]
 
   prepare_reference:
     run: prepare_reference.cwl 
@@ -117,9 +117,9 @@ outputs:
   fastqc_result2:
     type: File
     outputSource: read_preprocessing/fastqc_result2
-  trimmomatic_log:
-    type: File
-    outputSource: read_preprocessing/trimmomatic_log
+  # trimmomatic_log:
+  #   type: File
+  #   outputSource: read_preprocessing/trimmomatic_log
   trimmomatic_summary:
     type: File
     outputSource: read_preprocessing/trimmomatic_summary

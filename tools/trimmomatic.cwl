@@ -64,10 +64,10 @@ outputs:
     type: File
     outputBinding:
       glob: $(inputs.fastq2.basename.replace(/\.gz$|\.bz2$/, '').replace(/\.fq$|\.fastq$/, '')).trimmomatic-se.fastq.gz
-  log:
-    type: File
-    outputBinding:
-      glob: $(inputs.outprefix).trimmomatic.log.txt
+  # log:
+  #   type: File
+  #   outputBinding:
+  #     glob: $(inputs.outprefix).trimmomatic.log.txt
   summary:
     type: File
     outputBinding:

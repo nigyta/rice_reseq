@@ -58,7 +58,7 @@ steps:
       threads: threads
       outprefix: outprefix
       adapter: get_adapter_fasta/adapter_fasta
-    out: [pe1, pe2, log, summary]
+    out: [pe1, pe2, summary]
 
 
   fastqc:
@@ -92,9 +92,9 @@ outputs:
     preprocessed_fastq2:
       type: File
       outputSource: trimmomatic/pe2
-    trimmomatic_log:
-      type: File
-      outputSource: trimmomatic/log
+    # trimmomatic_log:
+    #   type: File
+    #   outputSource: trimmomatic/log
     trimmomatic_summary:
       type: File
       outputSource: trimmomatic/summary
