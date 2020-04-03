@@ -36,15 +36,18 @@ inputs:
     secondaryFiles:
       - .fai
       - ^.dict
+  emit-ref-conf:
+    type: string
+    doc: Mode for emitting reference confidence scores [GVCF(=default) or BP_RESOLUTION]
+    default: GVCF
+    inputBinding:
+      prefix: --emit-ref-confidence
     
 
 arguments:
   - id: max-alt-alleles
     prefix: -max-alternate-alleles
     valueFrom: "2"
-  - id: emit-ref-conf
-    prefix: --emit-ref-confidence
-    valueFrom: GVCF
 
 outputs:
   vcf:
