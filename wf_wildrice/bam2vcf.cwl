@@ -25,14 +25,10 @@ inputs:
   threads:
     type: int
     default: 1
-  filter-expression:
-    type: string
-    doc: VCF filter condition for GATK-VariantFiltration
-    default: "QD < 5.0 || FS > 50.0 || SOR > 3.0 || MQ < 50.0 || MQRankSum < -2.5 || ReadPosRankSum < -1.0 || ReadPosRankSum > 3.5"
 
 steps:
   bamfilter:
-    run: ../wf_wildrice/bamfilter_wf.cwl
+    run: bamfilter_wf.cwl
     in:
       bam: bam
       outprefix: outprefix
@@ -58,27 +54,10 @@ steps:
       reference: reference
       output: 
         source: outprefix
-        valueFrom: ${ return "variants_" + self + ".genotype.vcf.gz"}
+        valueFrom: ${ return "variants_" + self + ".vcf.gz"}
     out: [vcf]
 
-  variant_filtration:
-    run: ../tools/gatk-VariantFiltration.cwl
-    in:
-      variant: genotype_gvcf/vcf
-      reference: reference
-      filter-expression: filter-expression
-    out: [vcf]
 
-  select_variants:
-    run: ../tools/gatk-SelectVariants.cwl
-    in:
-      variant: variant_filtration/vcf
-      reference: reference
-      output:
-        source: outprefix
-        valueFrom: ${ return "variants_" + self + ".filtered.vcf.gz"}
-
-    out: [vcf]
 
 
 outputs:
@@ -88,9 +67,6 @@ outputs:
     non_filter_vcf:
       type: File
       outputSource: genotype_gvcf/vcf
-    varonly_vcf:
-      type: File
-      outputSource: select_variants/vcf
     properbam:
       type: File
       outputSource: bamfilter/properbam_with_index
