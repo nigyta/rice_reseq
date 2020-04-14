@@ -3,8 +3,8 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-id: gatk-SelectVariants-v4.0.11.0
-label: gatk-SelectVariants-v4.0.11.0
+id: gatk-SelectVariants_for_wr-v4.0.11.0
+label: gatk-SelectVariants_for_wr-v4.0.11.0
 
 requirements:
     InlineJavascriptRequirement: {}
@@ -33,20 +33,23 @@ inputs:
   output:
     type: string
     doc: Output VCF file name
-    default: variants.varonly.vcf.gz
+    default: variants.snp.vcf.gz
     inputBinding:
       prefix: --output
 
+  vartype:
+    type: string
+    doc: Type to include (SNP or INDEL)
+    inputBinding:
+      prefix: --select-type-to-include
+
+  select:
+    type: string?
+    doc: Select Expressions [e.g. vc.getGenotype("sample").isHomVar() or isHet()]
+    inputBinding:
+      prefix: --selectExpressions
 
 arguments:
-  - id: option1
-    prefix: --select-type-to-include
-    valueFrom: "SNP"
-  - id: option2
-    prefix: --select-type-to-include
-    valueFrom: "INDEL"
-  - id: filter-name
-    valueFrom: --exclude-filtered
 
 outputs:
   vcf:

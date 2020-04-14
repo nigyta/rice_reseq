@@ -1,0 +1,33 @@
+import gzip
+import sys
+
+
+file_name = sys.argv[1]
+out_file_name = sys.argv[2]
+
+list_depth = []
+
+with gzip.open(file_name, "rt") as fi:
+    for line in fi:
+        if not line.startswith("chr"):
+            continue
+        cols = line.strip("\n").split("\t")
+        ref = cols[3]
+        alt = cols[4]
+        genotype_values = cols[9].split(":")
+        genotype = genotype_values[0]
+        format_values = cols[8].split(":")
+        format_gt = format_values[0]
+        assert format_gt == "GT"
+
+        if len(ref) == len(alt) == 1:
+            if genotype == "1/1": # homo
+                depth = int(cols[9].split(":")[2])
+                format_dp = format_values[2]
+                assert format_dp == "DP"
+                list_depth.append(depth)
+ave_depth = sum(list_depth) / len(list_depth)
+
+with open(out_file_name, "w") as f:
+    f.write(f"ave_depth_of_homo_snp\t{ave_depth:.1f}\n")
+

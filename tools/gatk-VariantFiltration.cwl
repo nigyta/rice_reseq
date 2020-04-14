@@ -32,7 +32,7 @@ inputs:
       - ^.dict
   output:
     type: string
-    doc: Output gVCF file name
+    doc: Output VCF file name
     default: variants.filter.genotype.vcf.gz
     inputBinding:
       prefix: --output

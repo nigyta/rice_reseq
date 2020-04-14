@@ -3,8 +3,8 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-id: gatk-SelectVariants-v4.0.11.0
-label: gatk-SelectVariants-v4.0.11.0
+id: gatk-VariantFiltration-v4.0.11.0
+label: gatk-VariantFiltration-v4.0.11.0
 
 requirements:
     InlineJavascriptRequirement: {}
@@ -12,7 +12,7 @@ requirements:
         dockerPull: broadinstitute/gatk:4.0.11.0
 
 
-baseCommand: [ gatk, --java-options, -Xmx4G, SelectVariants ]
+baseCommand: [ gatk, --java-options, -Xmx4G, VariantFiltration ]
 
 inputs:
   variant:
@@ -33,20 +33,26 @@ inputs:
   output:
     type: string
     doc: Output VCF file name
-    default: variants.varonly.vcf.gz
+    default: variants.filter.genotype.vcf.gz
     inputBinding:
       prefix: --output
+  
+  filter_condition:
+    type: string
+    doc: Filter condition
+    default: "QD < 5.0 || FS > 50.0 || SOR > 3.0 || MQ < 50.0 || MQRankSum < -2.5 || ReadPosRankSum < -1.0 || ReadPosRankSum > 3.5"
 
+  dp_cutoff:
+    type: int
+    doc: Maximum DP threshold (mean depth of homo-SNPs)
 
 arguments:
-  - id: option1
-    prefix: --select-type-to-include
-    valueFrom: "SNP"
-  - id: option2
-    prefix: --select-type-to-include
-    valueFrom: "INDEL"
   - id: filter-name
-    valueFrom: --exclude-filtered
+    prefix: --filter-name
+    valueFrom: FILTER
+  - id: filter-string
+    prefix: --filter-expression
+    valueFrom: 'DP > $(parseInt(inputs.dp_cutoff)) || $(inputs.filter_condition)'
 
 outputs:
   vcf:

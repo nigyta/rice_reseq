@@ -33,7 +33,7 @@ inputs:
   output:
     type: string
     doc: Output VCF file name
-    default: variants.varonly.vcf.gz
+    default: variants.indel.vcf.gz
     inputBinding:
       prefix: --output
 
@@ -41,12 +41,7 @@ inputs:
 arguments:
   - id: option1
     prefix: --select-type-to-include
-    valueFrom: "SNP"
-  - id: option2
-    prefix: --select-type-to-include
     valueFrom: "INDEL"
-  - id: filter-name
-    valueFrom: --exclude-filtered
 
 outputs:
   vcf:
